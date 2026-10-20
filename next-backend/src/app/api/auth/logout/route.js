@@ -1,4 +1,3 @@
-//src/app/api/auth/logout/route.js
 
 import { successResponse } from "@/lib/utils";
 
@@ -14,7 +13,7 @@ export async function POST() {
     response.cookies.set("token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
       maxAge: 0,
     });
@@ -22,13 +21,10 @@ export async function POST() {
     return response;
   } catch (error) {
     console.error("Logout error:", error);
+
     return successResponse(
       { message: "Logout successful" },
       200
     );
   }
 }
-
-/**
- * Your logout codes goes here
- */
